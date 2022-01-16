@@ -6,6 +6,11 @@ import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 const app = express();
 app.use(express.json());
 
+const config = {
+  secret: "secret",
+  expiresIn: "1h",
+};
+
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
   id: yup
