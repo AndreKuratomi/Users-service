@@ -32,7 +32,7 @@ const loginSchema = yup.object().shape({
 });
 
 // ==================MIDDLEWARES====================
-const validateRegister = (schema) => async (req, res, next) => {
+const validateRequisition = (schema) => async (req, res, next) => {
   const resource = req.body;
   try {
     await schema.validate(resource);
@@ -43,6 +43,22 @@ const validateRegister = (schema) => async (req, res, next) => {
     res.status(422).json({ error: e.errors.join(", ") });
     // como exibir todos os erros feitos?
   }
+};
+
+const authenticateUser = (req, res, next) => {
+  let token = req.headers.authorization.split(" ")[1];
+
+  jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    let user = USERS.find((user) => user.username === decoded.username);
+
+    req.user = user;
+  });
+
+  return next();
 };
 
 const updatePassword = (schema) => async (req, res, next) => {
@@ -56,21 +72,10 @@ const updatePassword = (schema) => async (req, res, next) => {
   }
 };
 
-const authenticateUser = (schema) => async (req, res, next) => {
-  const resource = req.body;
-  try {
-    await schema.validate(resource);
-    next();
-  } catch (e) {
-    console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
-  }
-};
-
 // ==================ROUTES====================
 const USERS = [];
 
-app.post("/signup", validateRegister(registerSchema), async (req, res) => {
+app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     // // console.log(hashedPassword);
@@ -98,23 +103,28 @@ app.post("/signup", validateRegister(registerSchema), async (req, res) => {
   }
 });
 
-app.post("/login", validateRegister(loginSchema), (req, res) => {
-  let { username, password } = req.body;
+app.post(
+  "/login",
+  validateRequisition(loginSchema),
+  // authenticateUser,
+  (req, res) => {
+    let { username, password } = req.body;
 
-  let wrightUser = USERS.find((user) => user.username === username);
+    let wrightUser = USERS.find((user) => user.username === username);
 
-  if (!wrightUser) {
-    return res.status(401).json({ message: "User not found!" });
-  } else if (wrightUser.password !== password) {
-    return res.status(401).json({ message: "User and password missmatch!" });
+    if (!wrightUser) {
+      return res.status(401).json({ message: "User not found!" });
+    } else if (wrightUser.password !== password) {
+      return res.status(401).json({ message: "User and password missmatch!" });
+    }
+
+    let token = jwt.sign({ username: username }, config.secret, {
+      expiresIn: config.expiresIn,
+    });
+
+    res.json({ token });
   }
-
-  let token = jwt.sign({ username: username }, config.secret, {
-    expiresIn: config.expiresIn,
-  });
-
-  res.json({ token });
-});
+);
 
 app.app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
