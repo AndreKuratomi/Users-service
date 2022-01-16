@@ -68,14 +68,13 @@ const authenticateUser = (schema) => async (req, res, next) => {
 };
 
 // ==================ROUTES====================
-
 const USERS = [];
 
 app.post("/signup", validateRegister(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log(req.body.password);
-    // console.log(hashedPassword);
+
+    // // console.log(hashedPassword);
     const newUser = {
       id: uuidv4(),
       username: req.body.username,
@@ -84,11 +83,11 @@ app.post("/signup", validateRegister(registerSchema), async (req, res) => {
       password: hashedPassword,
       createdOn: new Date(),
     };
-    USERS.push(newUser);
 
     const { password: data_password, ...dataWithoutPassword } = newUser;
 
-    console.log(newUser);
+    USERS.push(newUser);
+
     return res.status(201).json(dataWithoutPassword);
     // return res.status(201).json(newUser);
   } catch (e) {
