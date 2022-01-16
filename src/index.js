@@ -40,7 +40,7 @@ const validateRegister = (schema) => async (req, res, next) => {
   } catch (e) {
     console.error(e);
     console.log(e.errors.join(", "));
-    res.status(403).json({ error: e.errors.join(", ") });
+    res.status(422).json({ error: e.errors.join(", ") });
     // como exibir todos os erros feitos?
   }
 };
@@ -71,23 +71,32 @@ const authenticateUser = (schema) => async (req, res, next) => {
 
 const USERS = [];
 
-app.post("/signup", validateRegister(registerSchema), (req, res) => {
-  const { username, age, email, password } = req.body;
-  const newUser = {
-    id: uuidv4(),
-    username,
-    age,
-    email,
-    password,
-    createdOn: new Date(),
-  };
-  USERS.push(newUser);
-  console.log(newUser);
+app.post("/signup", validateRegister(registerSchema), async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(req.body.password);
+    // console.log(hashedPassword);
+    const newUser = {
+      id: uuidv4(),
+      username: req.body.username,
+      age: req.body.age,
+      email: req.body.email,
+      password: hashedPassword,
+      createdOn: new Date(),
+    };
+    USERS.push(newUser);
 
-  // const { body: itens } = req;
-  // USERS.push(itens);
-  // console.log(itens);
-  return res.status(201).json(newUser);
+    const { password: data_password, ...dataWithoutPassword } = newUser;
+
+    console.log(newUser);
+    return res.status(201).json(dataWithoutPassword);
+    // return res.status(201).json(newUser);
+  } catch (e) {
+    // console.log(req.body.password);
+    // const hashedPassword = bcrypt.hash(req.body.password, 10);
+    // console.log(hashedPassword);
+    res.json({ message: "Error while creating an user" });
+  }
 });
 
 app.listen(3000, () => {
