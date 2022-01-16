@@ -259,4 +259,11 @@ Status: 204 NO CONTENT
 
 # Referências
 
-<p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
+- [Node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/en/4x/api.html)
+- [Nodemon](https://nodemon.io/)
+- [Sucrase](https://dev.to/evandersonvasconcelos/how-to-use-the-syntax-import-export-on-nodejs-o5b)
+- [Yup](https://github.com/jquense/yup)
+- [JWT](https://github.com/auth0/node-jsonwebtoken)
+- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js)
+- [Dotenv](https://www.npmjs.com/package/dotenv)
