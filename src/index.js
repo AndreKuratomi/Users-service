@@ -47,7 +47,7 @@ const validateRequisition = (schema) => async (req, res, next) => {
     next();
   } catch (e) {
     console.error(e);
-    console.log(e.errors.join(", "));
+    // console.log(e.errors.join(", "));
     res.status(422).json({ error: e.errors.join(", ") });
     // como exibir todos os erros feitos?
   }
@@ -64,23 +64,26 @@ const authenticateUser = (req, res, next) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    let user = USERS.find((user) => user.username === decoded.username);
+    let authenticatedUser = USERS.find(
+      (user) => user.username === decoded.username
+    );
 
-    req.user = user;
-    // não entendi exatamente o que a linha acima faz
+    req.authenticatedUser = authenticatedUser;
   });
 
   return next();
 };
 
-const permissionForUpdatingPassword = (uuid) => (req, res, next) => {
-  let authorizedUser = USERS.find((user) => user.uuid === uuid);
+const permissionForUpdatingPassword = (req, res, next) => {
+  const { uuid } = req.params;
+
+  let authorizedUser = USERS.find((user) => (user.uuid = uuid));
 
   if (!authorizedUser) {
-    return res
-      .status(403)
-      .json({ message: "Request only permited for the uuid's owner!" });
+    return res.status(401).json({ message: "No user found!" });
   }
+
+  req.authorizedUser = authorizedUser;
 
   return next();
 };
@@ -136,9 +139,27 @@ app.get("/users", authenticateUser, (req, res) => {
   return res.json(allUsers);
 });
 
-app.put("/users/uuid/password", authenticateUser, middleware, (req, res) => {
-  return res.status(204);
-});
+app.put(
+  "/users/:uuid/password",
+  permissionForUpdatingPassword,
+  authenticateUser,
+  (req, res) => {
+    const auth = req.authenticatedUser;
+    const user = req.authorizedUser;
+    console.log(auth.uuid);
+    console.log(user.uuid);
+
+    if (auth.uuid !== user.uuid) {
+      return res
+        .status(403)
+        .json({ message: "Request only permited for the uuid's owner!" });
+    }
+
+    const { newPassword } = req.body;
+    user.password = newPassword;
+    return res.status(204).json({ message: "" });
+  }
+);
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
