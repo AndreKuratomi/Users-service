@@ -4,12 +4,13 @@
 - [Instalação](#instalação)
 - [Utilização](#utilização)
 - [Termos de uso](#termos-de-uso)
+- [Referências](#referências)
 
 <br>
 
 # Descrição
 
-<p><b>Users service</b> é uma aplicação simples que se propõe a realizar o CRUD (cadastro, visualização, atualização e deleção) de usuários assim como o de suas anotações e assim gerenciá-las. Esta aplicação utiliza os frameworks Node.js e Express.js</p>
+<p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
 # Instalação
@@ -40,13 +41,14 @@ code .
 
 <p>2. Feita a clonagem, instalar no terminal:</p>
 
-O gerenciador de pacotes <b>yarn</b>:
+<ul>
+<li>O gerenciador de pacotes <b>yarn</b>:</li>
 
 ```
 npm install --global yarn
 ```
 
-O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.
+<li>O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.</li>
 
 O framework <b>Express.js</b>:
 
@@ -89,6 +91,8 @@ E o pacote <b>dotenv</b>:
 ```
 yarn add dotenv
 ```
+
+</ul>
 
 <p>3. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
 
@@ -250,5 +254,9 @@ Status: 204 NO CONTENT
 ```
 
 # Termos de uso
+
+<p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
+
+# Referências
 
 <p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
