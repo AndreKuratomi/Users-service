@@ -19,7 +19,7 @@ const registerSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
   createdOn: yup
-    .string()
+    .date()
     .notRequired()
     .default(function () {
       return new Date();
@@ -39,7 +39,9 @@ const validateRegister = (schema) => async (req, res, next) => {
     next();
   } catch (e) {
     console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
+    console.log(e.errors.join(", "));
+    res.status(422).json({ error: e.errors.join(", ") });
+    // como exibir todos os erros feitos?
   }
 };
 
@@ -64,6 +66,38 @@ const authenticateUser = (schema) => async (req, res, next) => {
     res.status(403).json({ error: e.error.join(", ") });
   }
 };
+
+// ==================ROUTES====================
+
+const USERS = [];
+
+app.post("/signup", validateRegister(registerSchema), async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(req.body.password);
+    // console.log(hashedPassword);
+    const newUser = {
+      id: uuidv4(),
+      username: req.body.username,
+      age: req.body.age,
+      email: req.body.email,
+      password: hashedPassword,
+      createdOn: new Date(),
+    };
+    USERS.push(newUser);
+
+    const { password: data_password, ...dataWithoutPassword } = newUser;
+
+    console.log(newUser);
+    return res.status(201).json(dataWithoutPassword);
+    // return res.status(201).json(newUser);
+  } catch (e) {
+    // console.log(req.body.password);
+    // const hashedPassword = bcrypt.hash(req.body.password, 10);
+    // console.log(hashedPassword);
+    res.json({ message: "Error while creating an user" });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
