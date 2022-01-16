@@ -50,43 +50,43 @@ npm install --global yarn
 
 <li>O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.</li>
 
-O framework <b>Express.js</b>:
+<li>O framework <b>Express.js</b>:</li>
 
 ```
 yarn add express
 ```
 
-A biblioteca <b>Nodemon</b> junto com o compilador <b>Sucrase</b>:
+<li>A biblioteca <b>Nodemon</b> junto com o compilador <b>Sucrase</b>:</li>
 
 ```
 yarn add sucrase nodemon -D
 ```
 
-A biblioteca <b>UUID</b>:
+<li>A biblioteca <b>UUID</b>:</li>
 
 ```
 yarn add uuid
 ```
 
-A biblioteca <b>YUP</b>:
+<li>A biblioteca <b>YUP</b>:</li>
 
 ```
 yarn add yup
 ```
 
-A biblioteca <b>jsonwebtoken</b>:
+<li>A biblioteca <b>jsonwebtoken</b>:</li>
 
 ```
 yarn add jsonwebtoken
 ```
 
-A biblioteca <b>bcrypt</b>:
+<li>A biblioteca <b>bcrypt</b>:</li>
 
 ```
 yarn add bcrypt
 ```
 
-E o pacote <b>dotenv</b>:
+<li>E o pacote <b>dotenv</b>:</li>
 
 ```
 yarn add dotenv
