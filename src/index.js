@@ -16,7 +16,7 @@ const config = {
 
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
-  id: yup
+  uuid: yup
     .string()
     .notRequired()
     .default(function () {
@@ -57,6 +57,9 @@ const authenticateUser = (req, res, next) => {
   let token = req.headers.authorization.split(" ")[1];
 
   jwt.verify(token, config.secret, (err, decoded) => {
+    if (!token) {
+      return res.status(401).json({ message: "No token used!" });
+    }
     if (err) {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -64,6 +67,7 @@ const authenticateUser = (req, res, next) => {
     let user = USERS.find((user) => user.username === decoded.username);
 
     req.user = user;
+    // não entendi exatamente o que a linha acima faz
   });
 
   return next();
@@ -89,7 +93,7 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
     // // console.log(hashedPassword);
 
     const newUser = {
-      id: uuidv4(),
+      uuid: uuidv4(),
       username: req.body.username,
       age: req.body.age,
       email: req.body.email,
@@ -103,37 +107,37 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
     USERS.push(newUser);
 
     return res.status(201).json(dataWithoutPassword);
-    // return res.status(201).json(newUser);
   } catch (e) {
-    // console.log(req.body.password);
-    // const hashedPassword = bcrypt.hash(req.body.password, 10);
-    // console.log(hashedPassword);
     res.json({ message: "Error while creating an user" });
   }
 });
 
-app.post(
-  "/login",
-  validateRequisition(loginSchema),
-  // authenticateUser,
-  (req, res) => {
-    let { username, password } = req.body;
+app.post("/login", validateRequisition(loginSchema), (req, res) => {
+  let { username, password } = req.body;
 
-    let wrightUser = USERS.find((user) => user.username === username);
+  let wrightUser = USERS.find((user) => user.username === username);
 
-    if (!wrightUser) {
-      return res.status(401).json({ message: "User not found!" });
-    } else if (wrightUser.password !== password) {
-      return res.status(401).json({ message: "User and password missmatch!" });
-    }
-
-    let token = jwt.sign({ username: username }, config.secret, {
-      expiresIn: config.expiresIn,
-    });
-
-    res.json({ token });
+  if (!wrightUser) {
+    return res.status(401).json({ message: "User not found!" });
+  } else if (wrightUser.password !== password) {
+    return res.status(401).json({ message: "User and password missmatch!" });
   }
-);
+
+  let token = jwt.sign({ username: username }, config.secret, {
+    expiresIn: config.expiresIn,
+  });
+
+  res.json({ token });
+});
+
+app.get("/users", authenticateUser, (req, res) => {
+  const allUsers = USERS;
+  return res.json(allUsers);
+});
+
+app.put("/users/uuid/password", authenticateUser, middleware, (req, res) => {
+  return res.status(204);
+});
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
