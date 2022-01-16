@@ -73,8 +73,8 @@ const USERS = [];
 app.post("/signup", validateRegister(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
     // // console.log(hashedPassword);
+
     const newUser = {
       id: uuidv4(),
       username: req.body.username,
@@ -98,6 +98,24 @@ app.post("/signup", validateRegister(registerSchema), async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.post("/login", validateRegister(loginSchema), (req, res) => {
+  let { username, password } = req.body;
+
+  let wrightUser = USERS.find((user) => user.username === username);
+
+  if (!wrightUser) {
+    return res.status(401).json({ message: "User not found!" });
+  } else if (wrightUser.password !== password) {
+    return res.status(401).json({ message: "User and password missmatch!" });
+  }
+
+  let token = jwt.sign({ username: username }, config.secret, {
+    expiresIn: config.expiresIn,
+  });
+
+  res.json({ token });
+});
+
+app.app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
 });
