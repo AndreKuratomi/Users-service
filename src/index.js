@@ -73,15 +73,16 @@ const authenticateUser = (req, res, next) => {
   return next();
 };
 
-const updatePassword = (schema) => async (req, res, next) => {
-  const resource = req.body;
-  try {
-    await schema.validate(resource);
-    next();
-  } catch (e) {
-    console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
+const permissionForUpdatingPassword = (uuid) => (req, res, next) => {
+  let authorizedUser = USERS.find((user) => user.uuid === uuid);
+
+  if (!authorizedUser) {
+    return res
+      .status(403)
+      .json({ message: "Request only permited for the uuid's owner!" });
   }
+
+  return next();
 };
 
 // ==================ROUTES====================
