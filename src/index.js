@@ -32,7 +32,7 @@ const loginSchema = yup.object().shape({
 });
 
 // ==================MIDDLEWARES====================
-const validateRegister = (schema) => async (req, res, next) => {
+const validateRequisition = (schema) => async (req, res, next) => {
   const resource = req.body;
   try {
     await schema.validate(resource);
@@ -75,7 +75,7 @@ const updatePassword = (schema) => async (req, res, next) => {
 // ==================ROUTES====================
 const USERS = [];
 
-app.post("/signup", validateRegister(registerSchema), async (req, res) => {
+app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     // // console.log(hashedPassword);
@@ -105,7 +105,7 @@ app.post("/signup", validateRegister(registerSchema), async (req, res) => {
 
 app.post(
   "/login",
-  validateRegister(loginSchema),
+  validateRequisition(loginSchema),
   // authenticateUser,
   (req, res) => {
     let { username, password } = req.body;
