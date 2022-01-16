@@ -1,10 +1,18 @@
 import express from "express";
 import * as yup from "yup";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import * as bcrypt from "bcryptjs";
 import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 const app = express();
 app.use(express.json());
+dotenv.config();
+
+const config = {
+  secret: process.env.JWT_SECRET_KEY,
+  expiresIn: process.env.JWT_EXPIRES_IN,
+};
 
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
@@ -77,7 +85,7 @@ const USERS = [];
 
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
     // // console.log(hashedPassword);
 
     const newUser = {
@@ -85,7 +93,8 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
       username: req.body.username,
       age: req.body.age,
       email: req.body.email,
-      password: hashedPassword,
+      // password: hashedPassword,
+      password: req.body.password,
       createdOn: new Date(),
     };
 
@@ -126,6 +135,6 @@ app.post(
   }
 );
 
-app.app.listen(3000, () => {
+app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
 });
