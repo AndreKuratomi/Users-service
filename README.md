@@ -23,13 +23,13 @@
 <p>1. Fazer o clone do reposítório <b>Aplicação de notas</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
 
 ```
-git@gitlab.com:ABKURA/aplicacao-de-notas.git
+git@gitlab.com:ABKURA/users-serveice.git
 ```
 
 <p>Entrar na pasta criada:</p>
 
 ```
-cd aplicacao-de-notas
+cd users-serveice
 ```
 
 <p>E rodar a aplicação:</p>
@@ -100,7 +100,7 @@ Dentro dele precisamos definir nossas duas variáveis de ambiente:
 
 ```
 JWT_SECRET_KEY=chave_aleatória_secreta
-JWT_EXPIRES_IN=tempo de vida do JWT (exemplos: 1000, "2 dias", "10h", "7d")
+JWT_EXPIRES_IN=tempo_de_vida_do_JWT (exemplos: 1000, "2 dias", "10h", "7d")
 ```
 
 <b>Obs:</b> as informações contidas no arquivo <b>.env</b> não devem ser compartilhadas. O arquivo já consta no <b>.gitignore</b> para não ser subido no repositório.
@@ -119,7 +119,9 @@ yarn user-services
 
 <h3>Rotas</h3>
 
-Cadastro de usuários (Método POST): <b>/signup</b>(ou localhost:3000/signup)
+<h4>Cadastro</h4>
+
+Cadastro de usuários (Método POST): <b>/signup</b> (ou localhost:3000/signup)
 
 Exemplo a ser colocado no body da requisição:
 
@@ -158,7 +160,7 @@ Caso falte algum item no body da requisição:
 }
 ```
 
-E a resposta esperada deverá ser:
+A resposta esperada deverá ser:
 
 ```
 Status: 422 UNPROCESSABLE ENTITY
@@ -170,7 +172,9 @@ Status: 422 UNPROCESSABLE ENTITY
 }
 ```
 
-Login do usuário recém cadastrado (Método POST): <b>/login</b>(ou localhost:3000/login)
+<h4>Login</h4>
+
+Login do usuário recém cadastrado (Método POST): <b>/login</b> (ou localhost:3000/login)
 
 Exemplo a ser colocado no body da requisição:
 
@@ -195,7 +199,9 @@ Status: 200 OK
 }
 ```
 
-Leitura dos usuários cadastrados (Método GET): <b>/users</b>(ou localhost:3000/users)
+<h4>Listagem</h4>
+
+Listagem dos usuários cadastrados (Método GET): <b>/users</b> (ou localhost:3000/users)
 
 Exemplo a ser colocado no body da requisição:
 
@@ -223,7 +229,9 @@ Status: 200 OK
 ]
 ```
 
-Atualização de usuário cadastrado (Método PUT): <b>/users/uuid**/password</b>(ou localhost:3000/users/uuid**/password)
+<h4>Atualização de senha:</h4>
+
+Atualização da senha do usuário cadastrado (Método PUT): <b>/users/uuid**/password</b> (ou localhost:3000/users/uuid**/password)
 
 \*\*preencher com o uuid do usuário anteriormente cadastrado.
 
