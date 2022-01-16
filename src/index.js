@@ -135,6 +135,10 @@ app.get("/users", authenticateUser, (req, res) => {
   return res.json(allUsers);
 });
 
+app.put("/users/uuid/password", authenticateUser, middleware, (req, res) => {
+  return res.status(204);
+});
+
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
 });
