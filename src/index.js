@@ -32,6 +32,38 @@ const loginSchema = yup.object().shape({
 });
 
 // ==================MIDDLEWARES====================
+const validateRegister = (schema) => async (req, res, next) => {
+  const resource = req.body;
+  try {
+    await schema.validate(resource);
+    next();
+  } catch (e) {
+    console.error(e);
+    res.status(403).json({ error: e.error.join(", ") });
+  }
+};
+
+const updatePassword = (schema) => async (req, res, next) => {
+  const resource = req.body;
+  try {
+    await schema.validate(resource);
+    next();
+  } catch (e) {
+    console.error(e);
+    res.status(403).json({ error: e.error.join(", ") });
+  }
+};
+
+const authenticateUser = (schema) => async (req, res, next) => {
+  const resource = req.body;
+  try {
+    await schema.validate(resource);
+    next();
+  } catch (e) {
+    console.error(e);
+    res.status(403).json({ error: e.error.join(", ") });
+  }
+};
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
