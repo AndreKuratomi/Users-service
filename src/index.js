@@ -16,7 +16,7 @@ const config = {
 
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
-  id: yup
+  uuid: yup
     .string()
     .notRequired()
     .default(function () {
@@ -57,6 +57,9 @@ const authenticateUser = (req, res, next) => {
   let token = req.headers.authorization.split(" ")[1];
 
   jwt.verify(token, config.secret, (err, decoded) => {
+    if (!token) {
+      return res.status(401).json({ message: "No token used!" });
+    }
     if (err) {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -89,7 +92,7 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
     // // console.log(hashedPassword);
 
     const newUser = {
-      id: uuidv4(),
+      uuid: uuidv4(),
       username: req.body.username,
       age: req.body.age,
       email: req.body.email,
@@ -134,6 +137,11 @@ app.post(
     res.json({ token });
   }
 );
+
+app.get("/users", authenticateUser, (req, res) => {
+  const allUsers = USERS;
+  return res.json(allUsers);
+});
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
