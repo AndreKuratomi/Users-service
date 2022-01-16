@@ -19,7 +19,7 @@ const registerSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
   createdOn: yup
-    .string()
+    .date()
     .notRequired()
     .default(function () {
       return new Date();
@@ -39,7 +39,9 @@ const validateRegister = (schema) => async (req, res, next) => {
     next();
   } catch (e) {
     console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
+    console.log(e.errors.join(", "));
+    res.status(403).json({ error: e.errors.join(", ") });
+    // como exibir todos os erros feitos?
   }
 };
 
@@ -64,6 +66,29 @@ const authenticateUser = (schema) => async (req, res, next) => {
     res.status(403).json({ error: e.error.join(", ") });
   }
 };
+
+// ==================ROUTES====================
+
+const USERS = [];
+
+app.post("/signup", validateRegister(registerSchema), (req, res) => {
+  const { username, age, email, password } = req.body;
+  const newUser = {
+    id: uuidv4(),
+    username,
+    age,
+    email,
+    password,
+    createdOn: new Date(),
+  };
+  USERS.push(newUser);
+  console.log(newUser);
+
+  // const { body: itens } = req;
+  // USERS.push(itens);
+  // console.log(itens);
+  return res.status(201).json(newUser);
+});
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
