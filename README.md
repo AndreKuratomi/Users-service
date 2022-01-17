@@ -8,14 +8,14 @@
 
 <br>
 
-# Descrição
+` RGB(0,255,0)``RGB(0,255,0) ` Descrição
 
 <p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
-# Instalação
+`RGB(0,255,0)` Instalação
 
-<p>0. Primeiramente, é necessário já ter instalado na própria máquina:
+<h5>0. Primeiramente, é necessário já ter instalado na própria máquina:</h5>
 
 - <p> Um <b>editor de código</b>, conhecido também como <b>IDE</b>. Por exemplo, o <b>[Visual Studio Code (VSCode)](https://code.visualstudio.com/)</b>.</p>
 
@@ -28,7 +28,7 @@ git init
 ```
 
 <br>
-<h5>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</h5>
+<h5>1. Fazer o clone do reposítório <u>Users service</u> na sua máquina pelo terminal do computador ou pelo do IDE:</h5>
 
 ```
 git clone git@gitlab.com:ABKURA/users-serveice.git
@@ -60,7 +60,7 @@ code .
 
 <br>
 
-<h5>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</h5>
+<h5>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <u>.env</u>:</h5>
 
 ```
 touch .env
@@ -75,7 +75,7 @@ JWT_EXPIRES_IN=tempo_de_vida_do_JWT (exemplos: 1000, "2 dias", "10h", "7d")
 
 <b>Obs:</b> as informações contidas no arquivo <b>.env</b> não devem ser compartilhadas. O arquivo já consta no <b>.gitignore</b> para não ser subido no repositório.
 
-# Utilização
+`RGB(0,255,0)` `RGB(0,255,0)`Utilização
 
 <p>Antes de passarmos para o API Client precisamos rodar o CLI</p>
 
@@ -219,11 +219,11 @@ E a resposta esperada:
 Status: 204 NO CONTENT
 ```
 
-# Termos de uso
+# `RGB(0,255,0)` Termos de uso
 
 <p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
 
-# Referências
+# `RGB(0,255,0)` Referências
 
 - [Node.js](https://nodejs.org/en/)
 - [Express](https://expressjs.com/en/4x/api.html)
