@@ -17,11 +17,11 @@
 
 <p>0. Primeiramente, é necessário já ter instalado na própria máquina:
 
-<p> Um <b>editor de código</b>, conhecido também como <b>IDE</b>. Por exemplo, o <b>Visual Studio Code (VSCode)</b>.</p>
+- <p> Um <b>editor de código</b>, conhecido também como <b>IDE</b>. Por exemplo, o <b>[Visual Studio Code (VSCode)](https://code.visualstudio.com/)</b>.</p>
 
-<p> Uma <b>ferramenta cliente de API REST</b>. Por exemplo, o <b>Insomnia</b> ou o <b>Postman</b>.</p>
+- <p> Uma <b>ferramenta cliente de API REST</b>. Por exemplo, o <b>[Insomnia](https://insomnia.rest/download)</b> ou o <b>[Postman](https://www.postman.com/product/rest-client/)</b>.</p>
 
-<p>1. Fazer o clone do reposítório <b>Aplicação de notas</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
+<p>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
 
 ```
 git@gitlab.com:ABKURA/users-serveice.git
@@ -47,7 +47,7 @@ code .
 npm install --global yarn
 ```
 
-- O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.
+- O ambiente de execução <b>Node.js</b>.
 
 - O framework <b>Express.js</b>:
 
