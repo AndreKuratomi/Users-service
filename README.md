@@ -8,12 +8,12 @@
 
 <br>
 
-# RGB(0,255,0) Descrição
+# `RGB(0,255,0)` Descrição
 
 <p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
-# ![RGB(0,255,0)] Instalação
+# [RGB(0,255,0)] Instalação
 
 <h5>0. Primeiramente, é necessário já ter instalado na própria máquina:</h5>
 
@@ -28,7 +28,7 @@ git init
 ```
 
 <br>
-<h5>1. Fazer o clone do reposítório <u style="text-decoration: underline">Users service</u> na sua máquina pelo terminal do computador ou pelo do IDE:</h5>
+<h5>1. Fazer o clone do reposítório <span style="text-decoration: underline">Users service</span> na sua máquina pelo terminal do computador ou pelo do IDE:</h5>
 
 ```
 git clone git@gitlab.com:ABKURA/users-serveice.git
@@ -60,7 +60,7 @@ code .
 
 <br>
 
-<h5>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <u style="text-decoration: underline">.env</u>:</h5>
+<h5>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <span style="text-decoration: underline">.env</span>:</h5>
 
 ```
 touch .env
