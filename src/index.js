@@ -1,14 +1,22 @@
 import express from "express";
 import * as yup from "yup";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import * as bcrypt from "bcryptjs";
 import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 const app = express();
 app.use(express.json());
+dotenv.config();
+
+const config = {
+  secret: process.env.JWT_SECRET_KEY,
+  expiresIn: process.env.JWT_EXPIRES_IN,
+};
 
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
-  id: yup
+  uuid: yup
     .string()
     .notRequired()
     .default(function () {
@@ -32,72 +40,126 @@ const loginSchema = yup.object().shape({
 });
 
 // ==================MIDDLEWARES====================
-const validateRegister = (schema) => async (req, res, next) => {
+const validateRequisition = (schema) => async (req, res, next) => {
   const resource = req.body;
   try {
     await schema.validate(resource);
     next();
   } catch (e) {
     console.error(e);
-    console.log(e.errors.join(", "));
+    // console.log(e.errors.join(", "));
     res.status(422).json({ error: e.errors.join(", ") });
     // como exibir todos os erros feitos?
   }
 };
 
-const updatePassword = (schema) => async (req, res, next) => {
-  const resource = req.body;
-  try {
-    await schema.validate(resource);
-    next();
-  } catch (e) {
-    console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
-  }
+const authenticateUser = (req, res, next) => {
+  let token = req.headers.authorization.split(" ")[1];
+
+  jwt.verify(token, config.secret, (err, decoded) => {
+    if (!token) {
+      return res.status(401).json({ message: "No token used!" });
+    }
+    if (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    let authenticatedUser = USERS.find(
+      (user) => user.username === decoded.username
+    );
+
+    req.authenticatedUser = authenticatedUser;
+  });
+
+  return next();
 };
 
-const authenticateUser = (schema) => async (req, res, next) => {
-  const resource = req.body;
-  try {
-    await schema.validate(resource);
-    next();
-  } catch (e) {
-    console.error(e);
-    res.status(403).json({ error: e.error.join(", ") });
+const permissionForUpdatingPassword = (req, res, next) => {
+  const { uuid } = req.params;
+
+  let authorizedUser = USERS.find((user) => (user.uuid = uuid));
+
+  if (!authorizedUser) {
+    return res.status(401).json({ message: "No user found!" });
   }
+
+  req.authorizedUser = authorizedUser;
+
+  return next();
 };
 
 // ==================ROUTES====================
-
 const USERS = [];
 
-app.post("/signup", validateRegister(registerSchema), async (req, res) => {
+app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log(req.body.password);
-    // console.log(hashedPassword);
+    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // // console.log(hashedPassword);
+
     const newUser = {
-      id: uuidv4(),
+      uuid: uuidv4(),
       username: req.body.username,
       age: req.body.age,
       email: req.body.email,
-      password: hashedPassword,
+      // password: hashedPassword,
+      password: req.body.password,
       createdOn: new Date(),
     };
-    USERS.push(newUser);
 
     const { password: data_password, ...dataWithoutPassword } = newUser;
 
-    console.log(newUser);
+    USERS.push(newUser);
+
     return res.status(201).json(dataWithoutPassword);
-    // return res.status(201).json(newUser);
   } catch (e) {
-    // console.log(req.body.password);
-    // const hashedPassword = bcrypt.hash(req.body.password, 10);
-    // console.log(hashedPassword);
     res.json({ message: "Error while creating an user" });
   }
 });
+
+app.post("/login", validateRequisition(loginSchema), (req, res) => {
+  let { username, password } = req.body;
+
+  let wrightUser = USERS.find((user) => user.username === username);
+
+  if (!wrightUser) {
+    return res.status(401).json({ message: "User not found!" });
+  } else if (wrightUser.password !== password) {
+    return res.status(401).json({ message: "User and password missmatch!" });
+  }
+
+  let token = jwt.sign({ username: username }, config.secret, {
+    expiresIn: config.expiresIn,
+  });
+
+  res.json({ token });
+});
+
+app.get("/users", authenticateUser, (req, res) => {
+  const allUsers = USERS;
+  return res.json(allUsers);
+});
+
+app.put(
+  "/users/:uuid/password",
+  permissionForUpdatingPassword,
+  authenticateUser,
+  (req, res) => {
+    const auth = req.authenticatedUser;
+    const user = req.authorizedUser;
+    console.log(auth.uuid);
+    console.log(user.uuid);
+
+    if (auth.uuid !== user.uuid) {
+      return res
+        .status(403)
+        .json({ message: "Request only permited for the uuid's owner!" });
+    }
+
+    const { newPassword } = req.body;
+    user.password = newPassword;
+    return res.status(204).json({ message: "" });
+  }
+);
 
 app.listen(3000, () => {
   console.log("Running at port 'http://localhost:3000'");
