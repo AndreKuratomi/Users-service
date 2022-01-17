@@ -94,7 +94,6 @@ const USERS = [];
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
     const newUser = {
       uuid: uuidv4(),
       username: req.body.username,
@@ -110,7 +109,6 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
 
     return res.status(201).json(dataWithoutPassword);
   } catch (e) {
-    console.log(e);
     res.json({ message: "Error while creating an user" });
   }
 });
@@ -152,11 +150,9 @@ app.put(
   "/users/:uuid/password",
   permissionForUpdatingPassword,
   authenticateUser,
-  (req, res) => {
+  async (req, res) => {
     const auth = req.authenticatedUser;
     const user = req.authorizedUser;
-    console.log(auth.uuid);
-    console.log(user.uuid);
 
     if (auth.uuid !== user.uuid) {
       return res
@@ -165,7 +161,9 @@ app.put(
     }
 
     const { newPassword } = req.body;
-    user.password = newPassword;
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+
     return res.status(204).json({ message: "" });
   }
 );
