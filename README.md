@@ -8,12 +8,12 @@
 
 <br>
 
-# `RGB(0,255,0)` Descrição
+# Descrição
 
 <p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
-# [RGB(0,255,0)] Instalação
+# Instalação
 
 <h5>0. Primeiramente, é necessário já ter instalado na própria máquina:</h5>
 
@@ -75,7 +75,7 @@ JWT_EXPIRES_IN=tempo_de_vida_do_JWT (exemplos: 1000, "2 dias", "10h", "7d")
 
 <b>Obs:</b> as informações contidas no arquivo <b>.env</b> não devem ser compartilhadas. O arquivo já consta no <b>.gitignore</b> para não ser subido no repositório.
 
-`RGB(0,255,0)` `RGB(0,255,0)`Utilização
+# Utilização
 
 <p>Antes de passarmos para o API Client precisamos rodar o CLI</p>
 
@@ -219,11 +219,11 @@ E a resposta esperada:
 Status: 204 NO CONTENT
 ```
 
-# `RGB(0,255,0)` Termos de uso
+# Termos de uso
 
 <p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
 
-# `RGB(0,255,0)` Referências
+# Referências
 
 - [Node.js](https://nodejs.org/en/)
 - [Express](https://expressjs.com/en/4x/api.html)
