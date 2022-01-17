@@ -93,16 +93,14 @@ const USERS = [];
 
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
-    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    // // console.log(hashedPassword);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const newUser = {
       uuid: uuidv4(),
       username: req.body.username,
       age: req.body.age,
       email: req.body.email,
-      // password: hashedPassword,
-      password: req.body.password,
+      password: hashedPassword,
       createdOn: new Date(),
     };
 
@@ -112,26 +110,37 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
 
     return res.status(201).json(dataWithoutPassword);
   } catch (e) {
+    console.log(e);
     res.json({ message: "Error while creating an user" });
   }
 });
 
-app.post("/login", validateRequisition(loginSchema), (req, res) => {
+app.post("/login", validateRequisition(loginSchema), async (req, res) => {
   let { username, password } = req.body;
 
-  let wrightUser = USERS.find((user) => user.username === username);
+  let wrightUser = await USERS.find((user) => user.username === username);
 
   if (!wrightUser) {
     return res.status(401).json({ message: "User not found!" });
-  } else if (wrightUser.password !== password) {
-    return res.status(401).json({ message: "User and password missmatch!" });
   }
 
-  let token = jwt.sign({ username: username }, config.secret, {
-    expiresIn: config.expiresIn,
-  });
-
-  res.json({ token });
+  try {
+    const match = await bcrypt.compare(password, wrightUser.password);
+    let token = jwt.sign(
+      { username: username, uuid: wrightUser.uuid },
+      config.secret,
+      {
+        expiresIn: config.expiresIn,
+      }
+    );
+    if (match) {
+      return res.json({ accessToken: token });
+    } else {
+      return res.status(401).json({ message: "Invalid credentials!" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 app.get("/users", authenticateUser, (req, res) => {
