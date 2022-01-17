@@ -21,17 +21,35 @@
 
 - <p> Uma <b>ferramenta cliente de API REST</b>. Por exemplo, o <b>[Insomnia](https://insomnia.rest/download)</b> ou o <b>[Postman](https://www.postman.com/product/rest-client/)</b>.</p>
 
+- <p> E versionar o diretório para receber o clone da aplicação:</p>
+
+```
+git init
+```
+
 <br>
 <p>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
 
 ```
-git@gitlab.com:ABKURA/users-serveice.git
+git clone git@gitlab.com:ABKURA/users-serveice.git
 ```
 
 <p>Entrar na pasta criada:</p>
 
 ```
 cd users-serveice
+```
+
+<p>Instalar as dependências:</p>
+
+```
+yarn
+```
+
+<p><b>Obs:</b> caso não tenha o gerenciador de pacotes <b>yarn</b> instalar desta maneira:</p>
+
+```
+npm install --global yarn
 ```
 
 <p>E rodar a aplicação:</p>
@@ -41,60 +59,8 @@ code .
 ```
 
 <br>
-<p>2. Feita a clonagem, instalar no terminal:</p>
 
-- O gerenciador de pacotes <b>yarn</b>:
-
-```
-npm install --global yarn
-```
-
-- O ambiente de execução <b>Node.js</b>.
-
-- O framework <b>Express.js</b>:
-
-```
-yarn add express
-```
-
-- A biblioteca <b>Nodemon</b> junto com o compilador <b>Sucrase</b>:
-
-```
-yarn add sucrase nodemon -D
-```
-
-- A biblioteca <b>UUID</b>:
-
-```
-yarn add uuid
-```
-
-- A biblioteca <b>YUP</b>:
-
-```
-yarn add yup
-```
-
-- A biblioteca <b>jsonwebtoken</b>:
-
-```
-yarn add jsonwebtoken
-```
-
-- A biblioteca <b>bcrypt</b>:
-
-```
-yarn add bcrypt
-```
-
-- E o pacote <b>dotenv</b>:
-
-```
-yarn add dotenv
-```
-
-<br>
-<p>3. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
+<p>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
 
 ```
 touch .env
