@@ -28,7 +28,7 @@ git init
 ```
 
 <br>
-<p>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
+<h5>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</h5>
 
 ```
 git clone git@gitlab.com:ABKURA/users-serveice.git
@@ -60,7 +60,7 @@ code .
 
 <br>
 
-<p>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
+<h5>2. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</h5>
 
 ```
 touch .env
