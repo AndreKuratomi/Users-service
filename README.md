@@ -8,12 +8,12 @@
 
 <br>
 
-# Descrição
+### Descrição
 
 <p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
-# Instalação
+### Instalação
 
 <p>0. Primeiramente, é necessário já ter instalado na própria máquina:
 
@@ -21,6 +21,7 @@
 
 - <p> Uma <b>ferramenta cliente de API REST</b>. Por exemplo, o <b>[Insomnia](https://insomnia.rest/download)</b> ou o <b>[Postman](https://www.postman.com/product/rest-client/)</b>.</p>
 
+<br>
 <p>1. Fazer o clone do reposítório <b>Users service</b> na sua máquina pelo terminal do computador ou pelo do IDE:</p>
 
 ```
@@ -39,6 +40,7 @@ cd users-serveice
 code .
 ```
 
+<br>
 <p>2. Feita a clonagem, instalar no terminal:</p>
 
 - O gerenciador de pacotes <b>yarn</b>:
@@ -91,6 +93,7 @@ yarn add bcrypt
 yarn add dotenv
 ```
 
+<br>
 <p>3. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
 
 ```
@@ -106,7 +109,7 @@ JWT_EXPIRES_IN=tempo_de_vida_do_JWT (exemplos: 1000, "2 dias", "10h", "7d")
 
 <b>Obs:</b> as informações contidas no arquivo <b>.env</b> não devem ser compartilhadas. O arquivo já consta no <b>.gitignore</b> para não ser subido no repositório.
 
-# Utilização
+### Utilização
 
 <p>Antes de passarmos para o API Client precisamos rodar o CLI</p>
 
@@ -250,11 +253,11 @@ E a resposta esperada:
 Status: 204 NO CONTENT
 ```
 
-# Termos de uso
+### Termos de uso
 
 <p>Esta aplicação atende a fins exclusivamente didáticos e não possui qualquer intuito comercial.</p>
 
-# Referências
+### Referências
 
 - [Node.js](https://nodejs.org/en/)
 - [Express](https://expressjs.com/en/4x/api.html)
