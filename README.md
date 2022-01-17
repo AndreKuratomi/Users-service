@@ -8,12 +8,12 @@
 
 <br>
 
-# `RGB(0,255,0)` Descrição
+# Descrição
 
 <p><b>Users service</b> é um serviço simples de gerenciamento de usuários. Esta aplicação utiliza o ambiente de execução Node.js e o framework Express.js</p>
 <br>
 
-# [RGB(0,255,0)] Instalação
+# Instalação
 
 <h5>0. Primeiramente, é necessário já ter instalado na própria máquina:</h5>
 
