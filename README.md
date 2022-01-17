@@ -41,58 +41,55 @@ code .
 
 <p>2. Feita a clonagem, instalar no terminal:</p>
 
-<ul>
-<li>O gerenciador de pacotes <b>yarn</b>:</li>
+- O gerenciador de pacotes <b>yarn</b>:
 
 ```
 npm install --global yarn
 ```
 
-<li>O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.</li>
+- O ambiente de execução <b>Node.js</b>. Disponível em https://nodejs.org/en/.
 
-<li>O framework <b>Express.js</b>:</li>
+- O framework <b>Express.js</b>:
 
 ```
 yarn add express
 ```
 
-<li>A biblioteca <b>Nodemon</b> junto com o compilador <b>Sucrase</b>:</li>
+- A biblioteca <b>Nodemon</b> junto com o compilador <b>Sucrase</b>:
 
 ```
 yarn add sucrase nodemon -D
 ```
 
-<li>A biblioteca <b>UUID</b>:</li>
+- A biblioteca <b>UUID</b>:
 
 ```
 yarn add uuid
 ```
 
-<li>A biblioteca <b>YUP</b>:</li>
+- A biblioteca <b>YUP</b>:
 
 ```
 yarn add yup
 ```
 
-<li>A biblioteca <b>jsonwebtoken</b>:</li>
+- A biblioteca <b>jsonwebtoken</b>:
 
 ```
 yarn add jsonwebtoken
 ```
 
-<li>A biblioteca <b>bcrypt</b>:</li>
+- A biblioteca <b>bcrypt</b>:
 
 ```
 yarn add bcrypt
 ```
 
-<li>E o pacote <b>dotenv</b>:</li>
+- E o pacote <b>dotenv</b>:
 
 ```
 yarn add dotenv
 ```
-
-</ul>
 
 <p>3. Feitas as instalações precisamos criar nosso arquivo de variáveis de ambiente, o <b>.env</b>:</p>
 
