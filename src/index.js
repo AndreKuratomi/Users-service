@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import express from "express";
 import * as bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 const app = express();

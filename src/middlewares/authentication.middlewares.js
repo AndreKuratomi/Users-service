@@ -1,17 +1,10 @@
 import jwt from "jsonwebtoken";
 
 import { USERS } from "../config/database.config";
+import { authenticating } from "../services/middlewares.services";
 
 export const authenticateUser = (req, res, next) => {
-  if (req.headers.authorization === undefined) {
-    return res.status(401).json({ message: "Headers unabled!" });
-  }
-
-  let token = req.headers.authorization.split(" ")[1];
-
-  if (token === undefined) {
-    return res.status(401).json({ message: "No token used!" });
-  }
+  authenticating(req, res);
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
