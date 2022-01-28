@@ -2,7 +2,9 @@ import * as bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
-app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
+import { USERS } from "../config/database.config";
+
+export const registerUser = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -23,9 +25,9 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   } catch (e) {
     res.json({ message: `Error while creating an user: ${e}` });
   }
-});
+};
 
-app.post("/login", validateRequisition(loginSchema), async (req, res) => {
+export const loginUser = async (req, res) => {
   let { username, password } = req.body;
 
   let wrightUser = await USERS.find((user) => user.username === username);
@@ -51,24 +53,19 @@ app.post("/login", validateRequisition(loginSchema), async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-});
+};
 
-app.get("/users", authenticateUser, (req, res) => {
+export const listUsers = (req, res) => {
   const allUsers = USERS;
   return res.json(allUsers);
-});
+};
 
-app.put(
-  "/users/:uuid/password",
-  authenticateUser,
-  permissionForUpdatingPassword,
-  async (req, res) => {
-    const user = req.authorizedUser;
+export const updateUser = (req, res) => {
+  const user = req.authorizedUser;
 
-    const { newPassword } = req.body;
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedNewPassword;
+  const { newPassword } = req.body;
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedNewPassword;
 
-    return res.status(204).json({ message: "" });
-  }
-);
+  return res.status(204).json({ message: "" });
+};
