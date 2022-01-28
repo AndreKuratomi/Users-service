@@ -7,6 +7,7 @@ import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 const app = express();
 app.use(express.json());
+
 dotenv.config();
 
 const config = {
@@ -41,32 +42,40 @@ const loginSchema = yup.object().shape({
 
 // ==================MIDDLEWARES====================
 const validateRequisition = (schema) => async (req, res, next) => {
+  // como assim 'você não passa os valores da validação para o request'?
   const resource = req.body;
   try {
     await schema.validate(resource);
-    next();
+    req.resource = resource;
+    console.log(req.resource);
+    return next();
+    // next();
   } catch (e) {
     console.error(e);
-    // console.log(e.errors.join(", "));
     res.status(422).json({ error: e.errors.join(", ") });
-    // como exibir todos os erros feitos?
   }
 };
 
 const authenticateUser = (req, res, next) => {
+  if (req.headers.authorization === undefined) {
+    return res.status(401).json({ message: "Headers unabled!" });
+  }
+
   let token = req.headers.authorization.split(" ")[1];
 
+  if (token === undefined) {
+    return res.status(401).json({ message: "No token used!" });
+  }
+
   jwt.verify(token, config.secret, (err, decoded) => {
-    if (!token) {
-      return res.status(401).json({ message: "No token used!" });
-    }
     if (err) {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    let authenticatedUser = USERS.find(
-      (user) => user.username === decoded.username
-    );
+    let authenticatedUser = USERS.find((user) => user.uuid === decoded.uuid);
+    if (!authenticatedUser) {
+      return res.status(401).json({ message: "No user found!" });
+    }
 
     req.authenticatedUser = authenticatedUser;
   });
@@ -76,12 +85,15 @@ const authenticateUser = (req, res, next) => {
 
 const permissionForUpdatingPassword = (req, res, next) => {
   const { uuid } = req.params;
+  const auth = req.authenticatedUser;
+
+  if (auth.uuid !== uuid) {
+    return res
+      .status(403)
+      .json({ message: "Request only permited for the uuid's owner!" });
+  }
 
   let authorizedUser = USERS.find((user) => (user.uuid = uuid));
-
-  if (!authorizedUser) {
-    return res.status(401).json({ message: "No user found!" });
-  }
 
   req.authorizedUser = authorizedUser;
 
@@ -94,6 +106,7 @@ const USERS = [];
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     const newUser = {
       uuid: uuidv4(),
       username: req.body.username,
@@ -109,7 +122,7 @@ app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
 
     return res.status(201).json(dataWithoutPassword);
   } catch (e) {
-    res.json({ message: "Error while creating an user" });
+    res.json({ message: `Error while creating an user: ${e}` });
   }
 });
 
@@ -148,17 +161,10 @@ app.get("/users", authenticateUser, (req, res) => {
 
 app.put(
   "/users/:uuid/password",
-  permissionForUpdatingPassword,
   authenticateUser,
+  permissionForUpdatingPassword,
   async (req, res) => {
-    const auth = req.authenticatedUser;
     const user = req.authorizedUser;
-
-    if (auth.uuid !== user.uuid) {
-      return res
-        .status(403)
-        .json({ message: "Request only permited for the uuid's owner!" });
-    }
 
     const { newPassword } = req.body;
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
