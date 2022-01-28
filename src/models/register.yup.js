@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 export const registerSchema = yup.object().shape({
   uuid: yup
