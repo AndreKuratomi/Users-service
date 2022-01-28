@@ -6,66 +6,6 @@ import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 const app = express();
 app.use(express.json());
 
-// ==================MIDDLEWARES====================
-const validateRequisition = (schema) => async (req, res, next) => {
-  // como assim 'você não passa os valores da validação para o request'?
-  const resource = req.body;
-  try {
-    await schema.validate(resource);
-    req.resource = resource;
-    console.log(req.resource);
-    return next();
-    // next();
-  } catch (e) {
-    console.error(e);
-    res.status(422).json({ error: e.errors.join(", ") });
-  }
-};
-
-const authenticateUser = (req, res, next) => {
-  if (req.headers.authorization === undefined) {
-    return res.status(401).json({ message: "Headers unabled!" });
-  }
-
-  let token = req.headers.authorization.split(" ")[1];
-
-  if (token === undefined) {
-    return res.status(401).json({ message: "No token used!" });
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-
-    let authenticatedUser = USERS.find((user) => user.uuid === decoded.uuid);
-    if (!authenticatedUser) {
-      return res.status(401).json({ message: "No user found!" });
-    }
-
-    req.authenticatedUser = authenticatedUser;
-  });
-
-  return next();
-};
-
-const permissionForUpdatingPassword = (req, res, next) => {
-  const { uuid } = req.params;
-  const auth = req.authenticatedUser;
-
-  if (auth.uuid !== uuid) {
-    return res
-      .status(403)
-      .json({ message: "Request only permited for the uuid's owner!" });
-  }
-
-  let authorizedUser = USERS.find((user) => (user.uuid = uuid));
-
-  req.authorizedUser = authorizedUser;
-
-  return next();
-};
-
 // ==================ROUTES====================
 
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
