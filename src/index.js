@@ -1,19 +1,11 @@
+import jwt from "jsonwebtoken";
 import express from "express";
 import * as yup from "yup";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import * as bcrypt from "bcryptjs";
 import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 const app = express();
 app.use(express.json());
-
-dotenv.config();
-
-const config = {
-  secret: process.env.JWT_SECRET_KEY,
-  expiresIn: process.env.JWT_EXPIRES_IN,
-};
 
 // ==================YUPS====================
 const registerSchema = yup.object().shape({
@@ -101,7 +93,6 @@ const permissionForUpdatingPassword = (req, res, next) => {
 };
 
 // ==================ROUTES====================
-const USERS = [];
 
 app.post("/signup", validateRequisition(registerSchema), async (req, res) => {
   try {
@@ -173,7 +164,3 @@ app.put(
     return res.status(204).json({ message: "" });
   }
 );
-
-app.listen(3000, () => {
-  console.log("Running at port 'http://localhost:3000'");
-});
