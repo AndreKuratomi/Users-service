@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 
 import { USERS } from "../config/database.config";
+import { config } from "../config/jwt.config";
 import { authenticating } from "../services/middlewares.services";
 
 export const authenticateUser = (req, res, next) => {
-  authenticating(req, res);
+  const token = authenticating(req, res);
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {

@@ -1,22 +1,13 @@
 import * as bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { v1 as uuidv1, v4 as uuidv4, v5 as uuidv5 } from "uuid";
 
 import { USERS } from "../config/database.config";
+import { config } from "../config/jwt.config";
+import { hashing } from "../services/controllers.services";
 
 export const registerUser = async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    const newUser = {
-      uuid: uuidv4(),
-      username: req.body.username,
-      age: req.body.age,
-      email: req.body.email,
-      password: hashedPassword,
-      createdOn: new Date(),
-    };
-
+    const newUser = await hashing(req);
     const { password: data_password, ...dataWithoutPassword } = newUser;
 
     USERS.push(newUser);
@@ -60,7 +51,7 @@ export const listUsers = (req, res) => {
   return res.json(allUsers);
 };
 
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
   const user = req.authorizedUser;
 
   const { newPassword } = req.body;
